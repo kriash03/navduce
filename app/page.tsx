@@ -1,5 +1,7 @@
 import { CountrySelector } from '@/components/country-selector'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { GuideShell } from '@/components/guide-shell'
+import { OfflineBanner } from '@/components/offline-banner'
 
 export default function Home() {
   return (
@@ -8,6 +10,8 @@ export default function Home() {
         <ThemeToggle />
       </nav>
       <CountrySelector />
+      <GuideShell />
+      <OfflineBanner />
     </main>
   )
 }

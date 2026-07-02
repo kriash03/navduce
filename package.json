@@ -1,7 +1,7 @@
 {
-  "name": "touristapp",
-  "version": "1.0.0",
-  "description": "An AI-powered, mobile-first web app that gives travelers street-level survival knowledge for any country — language, customs, money, and food.",
+  "name": "navduce",
+  "version": "1.1.0",
+  "description": "Navduce — AI-powered local guide for any country. Street-level knowledge on language, customs, budget, and food.",
   "main": "index.js",
   "directories": {
     "doc": "docs"

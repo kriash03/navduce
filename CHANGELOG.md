@@ -1,8 +1,14 @@
 # Changelog
 
-All notable changes to TouristSurvive are documented here.
+All notable changes to Navduce are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
+
+## [1.1.0] - 2026-07-03
+### Changed
+- Renamed project from TouristSurvive to **Navduce**
+- Updated app metadata title and description for SEO
+- Updated README with full feature list and Upstash env var docs
 
 ## [1.0.0] - 2026-07-02
 ### Added

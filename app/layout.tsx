@@ -16,8 +16,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'TouristSurvive',
-  description: 'Street-level travel survival knowledge for any country.',
+  title: 'Navduce',
+  description: 'Your AI-powered local guide for any country. Language, customs, budget, food — street-level knowledge before you land.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

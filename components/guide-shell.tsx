@@ -84,7 +84,7 @@ export function GuideShell() {
       >
         {TABS.map(({ key, label }) => {
           const isActive = activeTab === key
-          const isDone = tabs[key].status === 'success'
+          const isDone = tabs[key]?.status === 'success'
           return (
             <button
               key={key}

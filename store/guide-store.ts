@@ -69,11 +69,22 @@ export const useGuideStore = create<GuideStore>()(
         tabs: state.tabs,
       }),
       // Rehydrated tabs with status 'loading' are reset to idle (page reload mid-fetch)
+      merge: (persistedState, currentState) => {
+        const p = persistedState as GuideStore | undefined
+        return {
+          ...currentState,
+          ...p,
+          tabs: {
+            ...currentState.tabs,
+            ...(p?.tabs ?? {}),
+          },
+        }
+      },
       onRehydrateStorage: () => (state) => {
         if (!state) return
         const fixed = { ...state.tabs }
         for (const key of ALL_TABS) {
-          if (fixed[key].status === 'loading') {
+          if (fixed[key] && fixed[key].status === 'loading') {
             fixed[key] = initialTabState()
           }
         }

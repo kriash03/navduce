@@ -8,6 +8,8 @@ import { LanguageSkeleton } from '@/components/skeletons/language-skeleton'
 import { CustomsSkeleton } from '@/components/skeletons/customs-skeleton'
 import { BudgetSkeleton } from '@/components/skeletons/budget-skeleton'
 import { FoodSkeleton } from '@/components/skeletons/food-skeleton'
+import { LearnSkeleton } from '@/components/skeletons/learn-skeleton'
+import { BottomNav } from '@/components/bottom-nav'
 
 const LanguageTab = lazy(() =>
   import('@/components/tabs/language-tab').then((m) => ({ default: m.LanguageTab }))
@@ -21,12 +23,16 @@ const BudgetTab = lazy(() =>
 const FoodTab = lazy(() =>
   import('@/components/tabs/food-tab').then((m) => ({ default: m.FoodTab }))
 )
+const LearnTab = lazy(() =>
+  import('@/components/tabs/learn-tab').then((m) => ({ default: m.LearnTab }))
+)
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: 'language', label: 'Language' },
   { key: 'customs', label: 'Customs' },
   { key: 'budget', label: 'Budget' },
   { key: 'food', label: 'Food' },
+  { key: 'learn', label: 'Learn' },
 ]
 
 const SKELETONS: Record<TabKey, React.ReactNode> = {
@@ -34,6 +40,7 @@ const SKELETONS: Record<TabKey, React.ReactNode> = {
   customs: <CustomsSkeleton />,
   budget: <BudgetSkeleton />,
   food: <FoodSkeleton />,
+  learn: <LearnSkeleton />,
 }
 
 const PANELS: Record<TabKey, React.ReactNode> = {
@@ -41,6 +48,7 @@ const PANELS: Record<TabKey, React.ReactNode> = {
   customs: <CustomsTab />,
   budget: <BudgetTab />,
   food: <FoodTab />,
+  learn: <LearnTab />,
 }
 
 export function GuideShell() {
@@ -59,16 +67,20 @@ export function GuideShell() {
   if (!mounted || !country) return null
 
   return (
-    <section id="guide-shell" className="space-y-4">
+    <section
+      id="guide-shell"
+      className="space-y-4 pb-[calc(56px+env(safe-area-inset-bottom))] md:pb-0"
+    >
       <h2 className="font-[family-name:var(--font-outfit)] text-lg font-bold text-[var(--text-primary)]">
         {country}
       </h2>
 
+      {/* Desktop tab bar — hidden on mobile */}
       <div
         role="tablist"
         aria-label="Guide sections"
         id={tablistId}
-        className="flex gap-2 overflow-x-auto pb-1 scrollbar-none"
+        className="hidden md:flex gap-2 overflow-x-auto pb-1 scrollbar-none"
       >
         {TABS.map(({ key, label }) => {
           const isActive = activeTab === key
@@ -127,6 +139,9 @@ export function GuideShell() {
           )}
         </div>
       ))}
+
+      {/* Mobile bottom nav — visible only below md breakpoint */}
+      <BottomNav />
     </section>
   )
 }

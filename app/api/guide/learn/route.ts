@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import groqClient from '@/lib/groq'
-import { getPrompt, getStrictPrompt, REQUIRED_KEYS, type CoreTabKey } from '@/lib/prompts'
-
-const VALID_TABS: CoreTabKey[] = ['language', 'customs', 'budget', 'food']
+import { getLearnPrompt, getStrictLearnPrompt } from '@/lib/prompts'
+import { isValidCountry } from '@/lib/countries'
 
 async function callGroq(system: string, user: string): Promise<string> {
   const completion = await groqClient.chat.completions.create({
     model: 'llama-3.3-70b-versatile',
-    temperature: 0.4,
+    temperature: 0.5,
     response_format: { type: 'json_object' },
     messages: [
       { role: 'system', content: system },
@@ -17,21 +16,7 @@ async function callGroq(system: string, user: string): Promise<string> {
   return completion.choices[0]?.message?.content ?? ''
 }
 
-function validateKeys(data: Record<string, unknown>, tab: CoreTabKey): boolean {
-  return REQUIRED_KEYS[tab].every((key) => key in data)
-}
-
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ tab: string }> }
-) {
-  const { tab: tabParam } = await params
-  const tab = tabParam as CoreTabKey
-
-  if (!VALID_TABS.includes(tab)) {
-    return NextResponse.json({ error: 'invalid_tab' }, { status: 400 })
-  }
-
+export async function POST(request: NextRequest) {
   let body: { country?: string }
   try {
     body = await request.json()
@@ -40,30 +25,30 @@ export async function POST(
   }
 
   const country = body.country?.trim()
-  if (!country) {
-    return NextResponse.json({ error: 'missing_country' }, { status: 400 })
+  if (!country || !isValidCountry(country)) {
+    return NextResponse.json({ error: 'invalid_country' }, { status: 400 })
   }
 
   try {
-    const { system, user } = getPrompt(tab, country)
+    const { system, user } = getLearnPrompt(country)
     const raw = await callGroq(system, user)
     const parsed = JSON.parse(raw)
 
-    if (validateKeys(parsed, tab)) {
+    if (Array.isArray(parsed.tips) && parsed.tips.length > 0) {
       return NextResponse.json(parsed)
     }
 
-    const { system: sys2, user: user2 } = getStrictPrompt(tab, country)
+    const { system: sys2, user: user2 } = getStrictLearnPrompt(country)
     const raw2 = await callGroq(sys2, user2)
     const parsed2 = JSON.parse(raw2)
 
-    if (validateKeys(parsed2, tab)) {
+    if (Array.isArray(parsed2.tips) && parsed2.tips.length > 0) {
       return NextResponse.json(parsed2)
     }
 
     return NextResponse.json({ error: 'parse_failure' }, { status: 422 })
   } catch (err) {
-    console.error(`[guide/${tab}] error:`, err)
+    console.error('[guide/learn] error:', err)
     if (err instanceof SyntaxError) {
       return NextResponse.json({ error: 'parse_failure' }, { status: 422 })
     }

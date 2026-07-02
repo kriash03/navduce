@@ -29,6 +29,8 @@ docs/
 CLAUDE.md
 skills-lock.json
 touristsurvive_prd.md
+test.md
+tsconfig.tsbuildinfo
 
 # IDE
 .vscode/

@@ -4,6 +4,12 @@ All notable changes to Navduce are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-07-03
+### Added
+- Edge rate limiting via Upstash Redis + @upstash/ratelimit (10 req / 60s per IP)
+- Middleware intercepts all `/api/guide/*` requests before they hit route handlers
+- 429 response includes `Retry-After` and `X-RateLimit-*` headers
+
 ## [1.1.0] - 2026-07-03
 ### Changed
 - Renamed project from TouristSurvive to **Navduce**

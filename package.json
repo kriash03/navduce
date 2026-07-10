@@ -1,6 +1,6 @@
 {
   "name": "navduce",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Navduce — AI-powered local guide for any country. Street-level knowledge on language, customs, budget, and food.",
   "main": "index.js",
   "directories": {

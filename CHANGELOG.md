@@ -4,6 +4,10 @@ All notable changes to Navduce are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] - 2026-07-10
+### Changed
+- Migrate Upstash Redis env vars from `KV_REST_API_*` prefix to `UPSTASH_REDIS_REST_*` to match new database credentials
+
 ## [1.2.0] - 2026-07-03
 ### Added
 - Edge rate limiting via Upstash Redis + @upstash/ratelimit (10 req / 60s per IP)
